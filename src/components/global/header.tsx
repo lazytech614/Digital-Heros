@@ -1,86 +1,72 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
-import { UserButton, SignInButton, SignUpButton, useUser } from "@clerk/nextjs";
 
-export default function Header() {
-  const { isSignedIn, user } = useUser();
+const Navbar = () => {
   const [open, setOpen] = useState(false);
 
+  const links = [
+    { label: "How It Works", href: "#how-it-works" },
+    { label: "Prizes", href: "#prizes" },
+    { label: "Charities", href: "#charities" },
+    { label: "Pricing", href: "#pricing" },
+  ];
+
   return (
-    <header className="w-full border-b bg-background sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-primary backdrop-blur-lg border-b border-emerald-mid/20">
+      <div className="container mx-auto flex items-center justify-between h-16 px-4">
         {/* Logo */}
-        <Link href="/" className="font-bold text-lg">
-          🎯 LuckyDraw
-        </Link>
+        <a href="#" className="text-xl font-bold text-white tracking-tight">
+          Birdie<span style={{ color: "var(--cta)" }}>Give</span>
+        </a>
 
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-6 text-sm">
-          <Link href="/">Home</Link>
-          <Link href="/#how">How it works</Link>
-          <Link href="/dashboard">Dashboard</Link>
-          <Link href="/admin">Admin</Link>
-        </nav>
-
-        {/* Right Side */}
-        <div className="hidden md:flex items-center gap-4">
-            {isSignedIn ? (
-                <UserButton />
-            ) : (
-                <>
-                <SignInButton>
-                    <button className="px-4 py-2 text-sm border rounded-lg">
-                    Sign In
-                    </button>
-                </SignInButton>
-
-                <SignUpButton>
-                    <button className="px-4 py-2 text-sm bg-primary text-primary-foreground rounded-lg">
-                    Get Started
-                    </button>
-                </SignUpButton>
-                </>
-            )}
-            </div>
+        {/* Desktop Links */}
+        <div className="hidden md:flex items-center gap-8 text-gray-300">
+          {links.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="text-sm text-cream/70 hover:text-cream transition-colors"
+            >
+              {link.label}
+            </a>
+          ))}
+          <Button size="sm" style={{ backgroundColor: "var(--cta)" }} className="text-black">
+            Subscribe Now
+          </Button>
+        </div>
 
         {/* Mobile Menu Button */}
-        <button className="md:hidden" onClick={() => setOpen(!open)}>
-          {open ? <X size={22} /> : <Menu size={22} />}
+        <button
+          className="md:hidden text-cream"
+          onClick={() => setOpen(!open)}
+        >
+          {open ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
       {/* Mobile Menu */}
       {open && (
-        <div className="md:hidden border-t px-4 py-4 space-y-4 bg-background">
-          <Link href="/" onClick={() => setOpen(false)}>Home</Link>
-          <Link href="/#how" onClick={() => setOpen(false)}>How it works</Link>
-          <Link href="/dashboard" onClick={() => setOpen(false)}>Dashboard</Link>
-          <Link href="/admin" onClick={() => setOpen(false)}>Admin</Link>
-
-          <div className="pt-4 border-t">
-            {isSignedIn ? (
-                <UserButton />
-            ) : (
-                <>
-                <SignInButton>
-                    <button className="block mb-2" onClick={() => setOpen(false)}>
-                    Sign In
-                    </button>
-                </SignInButton>
-
-                <SignUpButton>
-                    <button className="block font-semibold" onClick={() => setOpen(false)}>
-                    Get Started
-                    </button>
-                </SignUpButton>
-                </>
-            )}
-            </div>
+        <div className="md:hidden bg-emerald-deep/95 backdrop-blur-lg border-b border-emerald-mid/20">
+          <div className="flex flex-col gap-4 p-6">
+            {links.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={() => setOpen(false)}
+                className="text-cream/70 hover:text-cream transition-colors"
+              >
+                {link.label}
+              </a>
+            ))}
+            <Button className="w-full">Subscribe Now</Button>
+          </div>
         </div>
       )}
-    </header>
+    </nav>
   );
-}
+};
+
+export default Navbar;

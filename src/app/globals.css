@@ -65,7 +65,12 @@
 ========================= */
 :root {
   --background: oklch(0.98 0 0);
+  --soft-background: #FEF3C7;
   --foreground: oklch(0.15 0 0);
+
+  --footer: #1C1917;
+  --dark-text: #1C1917;
+  --muted-text: #7A7068;
 
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.15 0 0);
@@ -74,16 +79,19 @@
   --popover-foreground: oklch(0.15 0 0);
 
   /* Purple */
-  --primary: oklch(0.6 0.25 280);
+  --primary: #064E3B;
   --primary-foreground: oklch(0.98 0 0);
 
   /* Green */
-  --secondary: oklch(0.7 0.2 145);
+  --secondary: #1D8A5E;
   --secondary-foreground: oklch(0.1 0 0);
 
   /* Gold */
-  --accent: oklch(0.8 0.18 85);
+  --accent: #39B37E;
   --accent-foreground: oklch(0.1 0 0);
+
+  --cta: #D97706;
+  --cta-foreground: oklch(0.1 0 0);
 
   --muted: oklch(0.95 0 0);
   --muted-foreground: oklch(0.5 0 0);

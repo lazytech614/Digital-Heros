@@ -1,12 +1,15 @@
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Hero from "@/components/landing/hero";
 import HowItWorks from "@/components/landing/how-it-works";
 import CharitySection from "@/components/landing/charity-section";
 import CTA from "@/components/landing/cta";
+import { useUser } from "@clerk/nextjs";
 
 export default async function LandingPage() {
   const { userId } = await auth();
+  const user = await currentUser();
+  console.log("🟢🟢", user)
 
   if (userId) {
     redirect("/dashboard");

@@ -1,10 +1,13 @@
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import ScoreCard from "@/components/score/score-card";
 import WinnerCard from "@/components/winner/winner-card";
 
 export default async function Dashboard() {
   const { userId } = await auth();
+
+  const user = await currentUser();
+    console.log("🟢🟢", user)
 
   if (!userId) {
     redirect("/");

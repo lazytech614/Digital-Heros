@@ -1,8 +1,9 @@
 import { prisma } from "@/lib/prisma";
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 
 export async function getOrCreateUser() {
   const { userId } = await auth();
+  const clerkUser = await currentUser();
 
   if (!userId) throw new Error("Unauthorized");
 
@@ -14,7 +15,8 @@ export async function getOrCreateUser() {
     user = await prisma.user.create({
       data: {
         clerkId: userId,
-        email: `${userId}@temp.com`, // temp fallback
+        name: clerkUser?.firstName + " " + clerkUser?.lastName || "Anonymous",
+        email: clerkUser?.emailAddresses[0].emailAddress || "empty@gmail.com", 
       },
     });
   }
