@@ -1,19 +1,23 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import ScoreCard from "@/components/score/score-card";
-import WinnerCard from "@/components/winner/winner-card";
+import Hero from "@/components/landing/hero";
+import HowItWorks from "@/components/landing/how-it-works";
+import CharitySection from "@/components/landing/charity-section";
+import CTA from "@/components/landing/cta";
 
-export default async function Home() {
+export default async function LandingPage() {
   const { userId } = await auth();
 
-  if (!userId) {
-    redirect("/sign-in");
+  if (userId) {
+    redirect("/dashboard");
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center">
-      <ScoreCard />
-      <WinnerCard />
+    <main className="flex flex-col">
+      <Hero />
+      <HowItWorks />
+      <CharitySection />
+      <CTA />
     </main>
   );
 }
