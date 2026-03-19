@@ -1,0 +1,169 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+  PAST_DUE
+}
+
+enum BillingInterval {
+  MONTHLY
+  YEARLY
+}
+
+enum DrawType {
+  RANDOM
+  ALGORITHMIC
+}
+
+enum MatchType {
+  THREE
+  FOUR
+  FIVE
+}
+
+enum WinnerStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  PAID
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+
+  // Clerk / Auth
+  clerkId String @unique
+
+  // Relations
+  subscription Subscription?
+  scores       Score[]
+  winners      Winner[]
+  drawResults  DrawResult[]
+  charity      Charity?      @relation(fields: [charityId], references: [id])
+  charityId    String?
+
+  contributionPct Float @default(10.0)
+
+  payments Payment[]
+}
+
+model Subscription {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+
+  status   SubscriptionStatus
+  interval BillingInterval
+
+  stripeSubId      String   @unique
+  currentPeriodEnd DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Score {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  value    Int // 1–45
+  playedAt DateTime
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, playedAt])
+}
+
+model Draw {
+  id    String @id @default(cuid())
+  month Int
+  year  Int
+
+  type DrawType
+
+  numbers Int[] // drawn numbers (array of 5)
+
+  isPublished Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  winners Winner[]
+  results DrawResult[]
+}
+
+model DrawResult {
+  id     String @id @default(cuid())
+  drawId String
+  draw   Draw   @relation(fields: [drawId], references: [id])
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  matchCount Int // 3, 4, or 5
+
+  createdAt DateTime @default(now())
+
+  winner Winner?
+}
+
+model Winner {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  drawId String
+  draw   Draw   @relation(fields: [drawId], references: [id])
+
+  drawResult   DrawResult? @relation(fields: [drawResultId], references: [id])
+  drawResultId String?     @unique
+
+  matchType MatchType
+
+  prizeAmount Float
+
+  status WinnerStatus @default(PENDING)
+
+  proofUrl String?
+
+  createdAt DateTime @default(now())
+}
+
+model Charity {
+  id          String  @id @default(cuid())
+  name        String
+  description String
+  imageUrl    String?
+
+  isFeatured Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  users User[]
+}
+
+model Payment {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  amount       Float
+  charityAmt   Float
+  prizePoolAmt Float
+
+  stripePaymentId String
+
+  createdAt DateTime @default(now())
+}
