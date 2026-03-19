@@ -1,9 +1,17 @@
-import { Button } from "@/components/ui/button";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
+import ScoreCard from "@/components/score/score-card";
 
-export default function Home() {
+export default async function Home() {
+  const { userId } = await auth();
+
+  if (!userId) {
+    redirect("/sign-in");
+  }
+
   return (
-    <div className="p-10">
-      <Button>Shadcn Working 🚀</Button>
-    </div>
+    <main className="min-h-screen flex items-center justify-center">
+      <ScoreCard />
+    </main>
   );
 }
