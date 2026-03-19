@@ -137,8 +137,10 @@ model Winner {
   status WinnerStatus @default(PENDING)
 
   proofUrl String?
-
+  
   createdAt DateTime @default(now())
+  
+  @@unique([userId, drawId])
 }
 
 model Charity {
