@@ -1,10 +1,10 @@
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Hero from "@/components/landing/hero";
 import HowItWorks from "@/components/landing/how-it-works";
-import CharitySection from "@/components/landing/charity-section";
-import CTA from "@/components/landing/cta";
-import { useUser } from "@clerk/nextjs";
+import Prizes from "@/components/landing/prizes";
+import Charity from "@/components/landing/charity";
+import Pricing from "@/components/landing/pricing";
 
 export default async function LandingPage() {
   const { userId } = await auth();
@@ -17,8 +17,9 @@ export default async function LandingPage() {
     <main className="flex flex-col">
       <Hero />
       <HowItWorks />
-      <CharitySection />
-      <CTA />
+      <Prizes />
+      <Charity />
+      <Pricing />
     </main>
   );
 }
