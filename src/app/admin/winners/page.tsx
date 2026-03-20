@@ -10,6 +10,8 @@ import {
 import { Button } from "@/components/ui/button";
 import WinnerActions from "@/components/winner/winner-actions";
 
+export const dynamic = "force-dynamic";
+
 export default async function WinnersPage() {
   const winners = await prisma.winner.findMany({
     include: {

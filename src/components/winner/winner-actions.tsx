@@ -18,7 +18,7 @@ export default function WinnerActions({ id }: { id: string }) {
 
     setLoading(null);
 
-    router.refresh(); // 🔥 refresh data
+    router.refresh();
   };
 
   return (
