@@ -69,7 +69,7 @@ const Navbar = () => {
       label: "Charities",
       href: "/charities",
       loggedin: true,
-      subscribed: false,
+      subscribed: true,
     },
     {
       label: "Draws",
@@ -113,7 +113,8 @@ const Navbar = () => {
   // Filter links based on user state
   const filteredLinks = links.filter((link) => {
     if (!isSignedIn && link.loggedin) return false;
-    if (isSignedIn && !isSubscribed && link.subscribed) return false;
+    if(isSignedIn && !link.loggedin) return false;
+    if(isSignedIn && isSubscribed && !link.subscribed) return false;
     return true;
   });
 

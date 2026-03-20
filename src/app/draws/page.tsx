@@ -16,8 +16,7 @@ export default async function DrawsPage() {
 
   const draws = await prisma.draw.findMany({
     orderBy: [
-      { year: "desc" },
-      { month: "desc" },
+      { createdAt: "desc" },
     ],
     include: {
       winners: dbUser
