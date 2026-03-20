@@ -5,8 +5,7 @@ export async function GET() {
   try {
     const draws = await prisma.draw.findMany({
       orderBy: [
-        { year: "desc" },
-        { month: "desc" },
+        { createdAt: "desc" },
       ],
       include: {
         winners: true,

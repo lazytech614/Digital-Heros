@@ -10,38 +10,42 @@ import {
   UserButton,
   useUser,
 } from "@clerk/nextjs";
+import { useAdmin } from "@/hooks/useAdmin";
 
 type UserData = {
   subscriptionStatus?: string;
 };
 
 const Navbar = () => {
-  const { isSignedIn } = useUser();
-
+  const { isAdmin, isLoaded } = useAdmin();
+  const { isSignedIn } = useUser();  
+  
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState<UserData | null>(null);
   const [isSubscribed, setIsSubscribed] = useState(false);
-
+  
   // Fetch DB user
   useEffect(() => {
     const fetchUser = async () => {
       if (!isSignedIn) return;
-
+      
       try {
         const res = await fetch("/api/users/user");
         const data = await res.json();
-
+        
         setUserData(data);
         setIsSubscribed(data?.subscriptionStatus === "ACTIVE");
       } catch (err) {
         console.error("Error fetching user:", err);
       }
     };
-
+    
     fetchUser();
   }, [isSignedIn]);
-
+  
   // Navigation links config
+  if (!isLoaded) return null; 
+
   const links = [
     {
       label: "How It Works",
@@ -87,6 +91,25 @@ const Navbar = () => {
     },
   ];
 
+  const adminLinks = [
+    {
+      label: "Draws",
+      href: "/draws",
+    },
+    {
+      label: "Winners",
+      href: "/winners",
+    },
+    {
+      label: "Charities",
+      href: "/charities",
+    },
+    {
+      label: "Users",
+      href: "/users",
+    },
+  ]
+
   // Filter links based on user state
   const filteredLinks = links.filter((link) => {
     if (!isSignedIn && link.loggedin) return false;
@@ -104,10 +127,20 @@ const Navbar = () => {
 
         {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-8 text-[#F5F5DC]/70">
-          {filteredLinks.map((link) => (
+          {!isAdmin && filteredLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
+              className="text-sm hover:text-white transition-colors"
+            >
+              {link.label}
+            </a>
+          ))}
+
+          {isAdmin && adminLinks.map((link) => (
+            <a
+              key={link.href}
+              href={`/admin/${link.href}`}
               className="text-sm hover:text-white transition-colors"
             >
               {link.label}
