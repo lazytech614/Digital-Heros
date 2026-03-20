@@ -7,6 +7,7 @@ type Winner = {
   id: string;
   matchType: "THREE" | "FOUR" | "FIVE";
   prizeAmount: number;
+  status: "APPROVED" | "PENDING" | "REJECTED";
 };
 
 export default function WinnerCard() {
@@ -30,8 +31,15 @@ export default function WinnerCard() {
     return "bg-purple-500 text-white";
   };
 
+  const getBgColor = (status: string) => {
+    if (status === "APPROVED") return "bg-green-400 text-black";
+    if (status === "PENDING") return "bg-yellow-400 text-black";
+    if(status === "REJECTED") return "bg-red-400 text-black";
+    return "bg-gray-400 text-black";
+  };
+
   return (
-    <Card className="max-w-md mx-auto mt-6 border border-border bg-card">
+    <Card className="mx-auto mt-6 border border-border bg-card">
       <CardHeader>
         <CardTitle>🏆 Your Winnings</CardTitle>
       </CardHeader>
@@ -48,7 +56,9 @@ export default function WinnerCard() {
         {winners.map((w) => (
           <div
             key={w.id}
-            className="flex items-center justify-between p-3 rounded-lg bg-secondary hover:scale-[1.02] transition"
+            className={`flex items-center justify-between p-3 rounded-lg hover:scale-[1.02] transition ${getBgColor(
+              w.status
+            )}`}
           >
             <div className="flex items-center gap-2">
               <span

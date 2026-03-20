@@ -6,6 +6,7 @@ import ProfileHeader from "@/components/profile/profile-header";
 import ProfileDetails from "@/components/profile/profile-details";
 import ProfileCharities from "@/components/profile/profile-charities";
 import ProfileScores from "@/components/profile/profile-scores";
+import WinnerCard from "@/components/dashboard/winner-card";
 
 export default async function ProfilePage() {
   const { userId } = await auth();
@@ -32,6 +33,7 @@ export default async function ProfilePage() {
         <ProfileDetails user={user} />
         <ProfileCharities charities={user.charities} />
         <ProfileScores scores={user.scores} />
+        <WinnerCard />
       </div>
     </div>
   );

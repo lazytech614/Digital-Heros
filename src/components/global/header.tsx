@@ -78,8 +78,8 @@ const Navbar = () => {
       subscribed: true,
     },
     {
-      label: "Dashboard",
-      href: "/dashboard",
+      label: "Add Score",
+      href: "/add-score",
       loggedin: true,
       subscribed: true,
     },

@@ -21,9 +21,9 @@ export default function Home() {
       </div>
 
       {/* Winnings */}
-      <div className="w-full max-w-md">
+      {/* <div className="w-full max-w-md">
         <WinnerCard />
-      </div>
+      </div> */}
 
       {/* Footer Hint */}
       <p className="mt-6 text-xs text-muted-foreground text-center">
