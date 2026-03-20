@@ -1,30 +1,42 @@
 "use client";
 
-type Charity = {
-  id: string;
-  name: string;
-  description: string;
-  imageUrl: string | null;
-  isFeatured: boolean;
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+
+type Props = {
+  charities: any[];
+  supportedCharityIds: string[];
 };
 
 export default function CharitiesClient({
   charities,
-}: {
-  charities: Charity[];
-}) {
+  supportedCharityIds
+}: Props ) {
+  const [loadingId, setLoadingId] = useState<string | null>(null);
+  
   const handleSupport = async (charityId: string) => {
-    const res = await fetch("/api/charity/support", {
-      method: "POST",
-      body: JSON.stringify({ charityId }),
-    });
+    try {
+      setLoadingId(charityId);
 
-    const data = await res.json();
+      const res = await fetch("/api/charity/support", {
+        method: "POST",
+        body: JSON.stringify({ charityId }),
+      });
 
-    if (!res.ok) {
-      alert(data.error);
-    } else {
-      alert("Charity added successfully!");
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.error(data.error);
+        toast.error("Something went wrong");
+      } else {
+        toast.success("Charity added successfully!");
+        location.reload();
+      }
+    } catch (err) {
+      console.error("Error adding charity:", err);
+      toast.error("Something went wrong");
+    } finally {
+      setLoadingId(null);
     }
   };
 
@@ -40,8 +52,11 @@ export default function CharitiesClient({
 
       {/* Grid */}
       <div className="max-w-6xl mx-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {charities.map((charity) => (
-          <div
+        {charities.map((charity) => {
+          const isSupported = supportedCharityIds.includes(charity.id);
+          const loading = loadingId === charity.id;
+
+          return <div
             key={charity.id}
             className="bg-white rounded-2xl shadow-sm border overflow-hidden hover:shadow-md transition"
           >
@@ -78,14 +93,23 @@ export default function CharitiesClient({
 
               {/* Button */}
               <button
+                disabled={isSupported || loading}
                 onClick={() => handleSupport(charity.id)}
-                className="mt-4 w-full bg-[#053C29] text-white py-2 rounded-lg font-medium hover:opacity-90"
+                className={`mt-4 w-full py-2 rounded cursor-pointer ${
+                  isSupported
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-[#053C29] text-white"
+                }`}
               >
-                Support This Charity
+                {loading
+                  ? "Loading..."
+                  : isSupported
+                  ? "Already Supporting"
+                  : "Support this charity"}
               </button>
             </div>
           </div>
-        ))}
+        })}
 
         {charities.length === 0 && (
           <div className="col-span-full text-center text-gray-500">

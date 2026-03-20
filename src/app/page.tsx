@@ -12,7 +12,6 @@ export default async function LandingPage() {
 
   if (userId) {
     const user = await getOrCreateUser()
-    console.log(user)
     // redirect("/dashboard");
     if(user.subscriptionStatus === "ACTIVE") redirect("/dashboard")
   }

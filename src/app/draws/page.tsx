@@ -30,8 +30,6 @@ export default async function DrawsPage() {
     },
   });
 
-  console.log(draws)
-
   return (
     <div className="min-h-screen bg-[#f8fafc] p-6">
       <h1 className="text-3xl font-bold mb-6">Monthly Draws</h1>

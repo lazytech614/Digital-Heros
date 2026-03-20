@@ -70,6 +70,13 @@ const Navbar = () => {
             >
               Profile
             </a> */}
+            <a
+              key={"ghjg"}
+              href={"/charities"}
+              className="text-sm hover:text-[#F5F5DC] transition-colors"
+            >
+              Charities
+            </a>
             <Show when="signed-in">
               <UserButton />
             </Show>
@@ -96,6 +103,13 @@ const Navbar = () => {
               className="text-sm hover:text-[#F5F5DC] transition-colors"
             >
               Profile
+            </a>
+            <a
+              key={"ghjg"}
+              href={"/charities"}
+              className="text-sm hover:text-[#F5F5DC] transition-colors"
+            >
+              Charities
             </a>
             <Show when="signed-in">
               <UserButton />
