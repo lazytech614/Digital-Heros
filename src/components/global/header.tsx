@@ -63,6 +63,13 @@ const Navbar = () => {
                 </button>
               </SignUpButton>
             </Show>
+            {/* <a
+              key={"ghjg"}
+              href={"/profile"}
+              className="text-sm hover:text-[#F5F5DC] transition-colors"
+            >
+              Profile
+            </a> */}
             <Show when="signed-in">
               <UserButton />
             </Show>
@@ -82,6 +89,13 @@ const Navbar = () => {
               className="text-sm hover:text-[#F5F5DC] transition-colors"
             >
               Dashboard
+            </a>
+            <a
+              key={"ghjg"}
+              href={"/profile"}
+              className="text-sm hover:text-[#F5F5DC] transition-colors"
+            >
+              Profile
             </a>
             <Show when="signed-in">
               <UserButton />
