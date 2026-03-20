@@ -1,8 +1,12 @@
 import { cancelSubscription, deleteUser, cancelCharity } from "@/services/user.service";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
+type Params = {
+  params: { id: string };
+};
+
+export async function GET(req: NextRequest, { params }: Params) {
+  const { id } =  params;
   return NextResponse.json({ id });
 }
 
