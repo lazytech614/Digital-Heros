@@ -51,8 +51,17 @@ model User {
   scores       Score[]
   winners      Winner[]
   drawResults  DrawResult[]
-  charity      Charity?      @relation(fields: [charityId], references: [id])
-  charityId    String?
+  // charity      Charity?      @relation(fields: [charityId], references: [id])
+  // charityId    String?
+  charities    Charity[] @relation("UserCharities")
+
+  stripeCustomerId String?
+  stripePeriod String?
+  stripeSubscriptionId String?
+  stripeCurrentPeriodEnd DateTime?
+  subscriptionStatus SubscriptionStatus?
+  billingInterval BillingInterval?
+  stripePriceId String?
 
   contributionPct Float @default(10.0)
 
@@ -153,7 +162,7 @@ model Charity {
 
   createdAt DateTime @default(now())
 
-  users User[]
+  users User[] @relation("UserCharities")
 }
 
 model Payment {

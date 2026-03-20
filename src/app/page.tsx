@@ -5,12 +5,14 @@ import HowItWorks from "@/components/landing/how-it-works";
 import Prizes from "@/components/landing/prizes";
 import Charity from "@/components/landing/charity";
 import Pricing from "@/components/landing/pricing";
+import { getOrCreateUser } from "@/lib/getUser";
 
 export default async function LandingPage() {
   const { userId } = await auth();
 
   if (userId) {
-    redirect("/dashboard");
+    await getOrCreateUser()
+    // redirect("/dashboard");
   }
 
   return (

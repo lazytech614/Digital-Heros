@@ -1,4 +1,28 @@
+"use client"
+
 export default function Pricing() {
+  const handleSubscribe = async(priceId: string) => {
+    if(!priceId) return
+
+    try{
+      const response = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({priceId})
+      })
+
+      const {url} = await response.json()
+
+      if(url) window.location.href = url
+      else throw new Error('No checkout url')
+    }catch(err){
+      console.log("Error during checkout", err)
+      alert("Error during checkout")
+    }
+  }
+
   return (
     <section className="py-24 px-6 bg-[#f5f5f3] text-center">
       
@@ -32,7 +56,7 @@ export default function Pricing() {
             <li>✔ Winner verification support</li>
           </ul>
 
-          <button className="w-full bg-[#0b4a34] text-white py-3 rounded-xl font-medium hover:opacity-90 transition">
+          <button onClick={() => handleSubscribe("monthly")} className="w-full bg-[#0b4a34] text-white py-3 rounded-xl font-medium hover:opacity-90 transition">
             Subscribe →
           </button>
         </div>
@@ -60,7 +84,7 @@ export default function Pricing() {
             <li>✔ Early access to new features</li>
           </ul>
 
-          <button className="w-full bg-orange-400 text-black py-3 rounded-xl font-medium hover:opacity-90 transition">
+          <button onClick={() => handleSubscribe("yearly")} className="w-full bg-orange-400 text-black py-3 rounded-xl font-medium hover:opacity-90 transition">
             Subscribe →
           </button>
         </div>

@@ -40,10 +40,14 @@ const Navbar = () => {
             Subscribe Now
           </Button> */}
           <Show when="signed-out">
-              <SignInButton />
+              <SignInButton>
+                <Button className="bg-transparent">
+                  Enter
+                </Button>
+              </SignInButton>
               <SignUpButton>
                 <button className="bg-[#FFD700] text-black rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
-                  Sign Up
+                  Subscribe
                 </button>
               </SignUpButton>
             </Show>
