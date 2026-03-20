@@ -4,7 +4,7 @@ function generateNumbers(): number[] {
   const set = new Set<number>();
 
   while (set.size < 5) {
-    const num = Math.floor(Math.random() * 45) + 1;
+    const num = Math.floor(Math.random() * 10) + 1;
     set.add(num);
   }
 
