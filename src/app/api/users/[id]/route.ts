@@ -1,12 +1,10 @@
 import { cancelSubscription, deleteUser, cancelCharity } from "@/services/user.service";
 import { NextRequest, NextResponse } from "next/server";
 
-type Params = {
-  params: { id: string };
-};
 
-export async function GET(req: NextRequest, { params }: Params) {
-  const { id } =  params;
+export async function GET(req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }) {
+  const { id } =  await params;
   return NextResponse.json({ id });
 }
 
@@ -25,7 +23,6 @@ export async function PATCH(
 ) {
   const { id } = await params;
   const body = await req.json();
-
   if (body.type === "cancel-subscription") {
     await cancelSubscription(id);
   }

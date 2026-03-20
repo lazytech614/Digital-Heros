@@ -29,12 +29,27 @@ export async function deleteUser(id: string) {
 }
 
 export async function cancelSubscription(id: string) {
+  // 1. Find subscription
+  const subscription = await prisma.subscription.findUnique({
+    where: { userId: id },
+  });
+
+  // 2. Delete subscription if exists
+  if (subscription) {
+    await prisma.subscription.delete({
+      where: { id: subscription.id },
+    });
+  }
+
+  // 3. Update user (VERY IMPORTANT)
   return prisma.user.update({
     where: { id },
-    data: { 
-        subscription: { 
-            disconnect: true 
-        } 
+    data: {
+      subscriptionStatus: "CANCELLED",
+      billingInterval: null,
+      stripeSubscriptionId: null,
+      stripePriceId: null,
+      stripeCurrentPeriodEnd: null,
     },
   });
 }
