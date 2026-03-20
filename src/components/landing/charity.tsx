@@ -1,6 +1,6 @@
 export default function Charity() {
   return (
-    <section className="bg-[#0b4a34] text-white py-24 px-6">
+    <section id="charity" className="bg-[#0b4a34] text-white py-24 px-6">
       <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
         
         <div>

@@ -27,7 +27,7 @@ export default function Prizes() {
   ];
 
   return (
-    <section className="py-24 px-6 bg-[#efe6c9] text-center">
+    <section id="prizes" className="py-24 px-6 bg-[#efe6c9] text-center">
       
       <p className="text-orange-500 tracking-[0.2em] text-sm mb-4">
         MONTHLY DRAWS

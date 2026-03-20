@@ -1,6 +1,7 @@
 export default function Hero() {
   return (
-    <section 
+    <section
+      id="hero" 
       className="relative min-h-screen flex items-center bg-cover bg-no-repeat text-white overflow-hidden px-6" 
       style={{background: "url(/hero-bg.jpg)"}}
     >

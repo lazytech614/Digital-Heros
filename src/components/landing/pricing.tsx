@@ -24,7 +24,7 @@ export default function Pricing() {
   }
 
   return (
-    <section className="py-24 px-6 bg-[#f5f5f3] text-center">
+    <section id="pricing" className="py-24 px-6 bg-[#f5f5f3] text-center">
       
       <p className="text-orange-500 tracking-[0.2em] text-sm mb-4">
         PRICING
