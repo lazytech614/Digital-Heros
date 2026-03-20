@@ -23,7 +23,7 @@ export async function POST(req: NextRequest,
       });
     }
 
-    return NextResponse.redirect(new URL("/admin/winners", req.url));
+    return NextResponse.redirect(new URL("/admin/winners", process.env.NEXT_PUBLIC_APP_URL));
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: "Failed" }, { status: 500 });
