@@ -15,23 +15,46 @@ export default function UsersPage() {
   const [actionType, setActionType] = useState<string | null>(null);
 
   async function fetchUsers() {
-    const query = new URLSearchParams();
+    try {
+      const query = new URLSearchParams();
 
-    query.append("sort", filters.sort);
-    if (filters.subscription) query.append("subscription", filters.subscription);
-    if (filters.contribution) query.append("contribution", filters.contribution);
-    filters.charities.forEach((c) => query.append("charities", c));
+      query.append("sort", filters.sort);
 
-    const res = await fetch(`/api/users?${query.toString()}`);
-    const data = await res.json();
-    setUsers(data);
+      if (filters.subscription)
+        query.append("subscription", filters.subscription);
+
+      if (filters.contribution)
+        query.append("contribution", filters.contribution);
+
+      filters.charities.forEach((c) =>
+        query.append("charities", c)
+      );
+
+      const res = await fetch(`/api/users?${query.toString()}`);
+
+      if (!res.ok) {
+        console.error("API Error:", res.status);
+        setUsers([]);
+        return;
+      }
+
+      const data = await res.json();
+      setUsers(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error("Fetch failed:", err);
+      setUsers([]);
+    }
   }
 
+  // 🔥 Debounce (important improvement)
   useEffect(() => {
-    fetchUsers();
+    const timeout = setTimeout(() => {
+      fetchUsers();
+    }, 400);
+
+    return () => clearTimeout(timeout);
   }, [filters]);
 
-  // 🔥 Confirm helper
   const confirmAction = (message: string) => {
     return window.confirm(message);
   };
@@ -87,25 +110,39 @@ export default function UsersPage() {
 
       {/* FILTERS */}
       <div className="flex flex-wrap gap-3 mb-6">
+        {/* SORT */}
         <select
           className="border p-2 rounded"
-          onChange={(e) => setFilters({ ...filters, sort: e.target.value })}
+          onChange={(e) =>
+            setFilters({ ...filters, sort: e.target.value })
+          }
         >
           <option value="desc">Newest</option>
           <option value="asc">Oldest</option>
         </select>
 
-        <input
+        {/* ✅ SUBSCRIPTION DROPDOWN */}
+        <select
           className="border p-2 rounded"
-          placeholder="Subscription"
+          value={filters.subscription}
           onChange={(e) =>
             setFilters({ ...filters, subscription: e.target.value })
           }
-        />
+        >
+          <option value="">All Subscriptions</option>
+          <option value="ACTIVE">ACTIVE</option>
+          <option value="CANCELLED">CANCELLED</option>
+          <option value="EXPIRED">EXPIRED</option>
+          <option value="PAST_DUE">PAST_DUE</option>
+        </select>
 
+        {/* ✅ CONTRIBUTION FILTER (>=) */}
         <input
+          type="number"
+          min="0"
           className="border p-2 rounded"
-          placeholder="Contribution %"
+          placeholder="Min Contribution %"
+          value={filters.contribution}
           onChange={(e) =>
             setFilters({ ...filters, contribution: e.target.value })
           }
@@ -139,6 +176,7 @@ export default function UsersPage() {
               {/* Charities */}
               <div>
                 <p className="font-medium text-sm mb-1">Charities:</p>
+
                 {user.charities.length === 0 ? (
                   <p className="text-gray-400 text-sm">No charities</p>
                 ) : (

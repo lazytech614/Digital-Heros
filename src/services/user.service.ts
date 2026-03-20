@@ -1,25 +1,40 @@
 import { prisma } from "@/lib/prisma";
 
 export async function getUsers(filters: any) {
+  const { sort, subscription, contribution, charities } = filters;
+
   return prisma.user.findMany({
     where: {
-      subscription: filters.subscription || undefined,
-      contributionPct: filters.contribution
-        ? Number(filters.contribution)
-        : undefined,
-      charities: filters.charities.length
-        ? {
-            some: {
-              id: { in: filters.charities },
+      // ✅ Subscription filter (safe)
+      ...(subscription && {
+        subscriptionStatus: subscription,
+      }),
+
+      // ✅ Contribution >= filter (IMPORTANT FIX)
+      ...(contribution && {
+        contributionPct: {
+          gte: Number(contribution),
+        },
+      }),
+
+      // ✅ Charities filter (if exists)
+      ...(charities?.length > 0 && {
+        charities: {
+          some: {
+            id: {
+              in: charities,
             },
-          }
-        : undefined,
+          },
+        },
+      }),
     },
+
+    orderBy: {
+      createdAt: sort === "asc" ? "asc" : "desc",
+    },
+
     include: {
       charities: true,
-    },
-    orderBy: {
-      createdAt: filters.sort === "asc" ? "asc" : "desc",
     },
   });
 }
