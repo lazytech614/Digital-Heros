@@ -8,8 +8,6 @@ import { useUser } from "@clerk/nextjs";
 
 export default async function LandingPage() {
   const { userId } = await auth();
-  const user = await currentUser();
-  console.log("🟢🟢", user)
 
   if (userId) {
     redirect("/dashboard");
