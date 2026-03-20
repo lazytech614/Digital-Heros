@@ -8,6 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import WinnerActions from "@/components/winner/winner-actions";
 
 export default async function WinnersPage() {
   const winners = await prisma.winner.findMany({
@@ -61,7 +62,7 @@ export default async function WinnersPage() {
                 </TableCell>
 
                 <TableCell className="text-right space-x-2 flex">
-                  <form action={`/api/winner/${w.id}`} method="POST">
+                  {/* <form action={`/api/winner/${w.id}`} method="POST">
                     <input type="hidden" name="action" value="approve" />
                     <Button size="sm" variant="default">
                       Approve
@@ -73,7 +74,8 @@ export default async function WinnersPage() {
                     <Button size="sm" variant="destructive">
                       Reject
                     </Button>
-                  </form>
+                  </form> */}
+                  <WinnerActions id={w.id} />
                 </TableCell>
               </TableRow>
             ))}
