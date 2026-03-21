@@ -28,7 +28,7 @@ export default function CharitiesPage() {
   }, []);
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
+    <div className="max-w-2xl mx-auto p-6 min-h-screen mt-16">
       <h1 className="text-2xl font-bold mb-4">Charities</h1>
 
       <AddCharityForm onSuccess={fetchCharities} />

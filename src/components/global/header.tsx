@@ -114,6 +114,10 @@ const Navbar = () => {
       label: "Users",
       href: "/users",
     },
+    {
+      label: "Dashboard",
+      href: "/",
+    },
   ]
 
   // Filter links based on user state
