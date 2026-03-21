@@ -10,6 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { toast } from "sonner";
 
 export default function DrawPage() {
   const [loading, setLoading] = useState(false);
@@ -52,9 +53,10 @@ export default function DrawPage() {
         body: JSON.stringify({ drawId: data.id }),
       });
 
-      await fetchData(); // 🔥 refresh data
-      alert("Draw completed!");
+      await fetchData(); 
+      toast.success("Draw completed!");
     } catch (err) {
+      toast.error("Something went wrong");
       console.error(err);
     }
 

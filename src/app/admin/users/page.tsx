@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function UsersPage() {
   const [users, setUsers] = useState<any[]>([]);
@@ -46,7 +47,6 @@ export default function UsersPage() {
     }
   }
 
-  // 🔥 Debounce (important improvement)
   useEffect(() => {
     const timeout = setTimeout(() => {
       fetchUsers();
@@ -55,6 +55,7 @@ export default function UsersPage() {
     return () => clearTimeout(timeout);
   }, [filters]);
 
+  //TODO: Implement better UI
   const confirmAction = (message: string) => {
     return window.confirm(message);
   };
@@ -67,6 +68,7 @@ export default function UsersPage() {
 
     await fetch(`/api/users/${id}`, { method: "DELETE" });
 
+    toast.success("User deleted!");
     setLoadingId(null);
     setActionType(null);
     fetchUsers();
@@ -83,6 +85,7 @@ export default function UsersPage() {
       body: JSON.stringify({ type: "cancel-subscription" }),
     });
 
+    toast.success("Subscription cancelled!");
     setLoadingId(null);
     setActionType(null);
     fetchUsers();
@@ -99,6 +102,7 @@ export default function UsersPage() {
       body: JSON.stringify({ type: "cancel-charity", charityId }),
     });
 
+    toast.success("Charity removed!");
     setLoadingId(null);
     setActionType(null);
     fetchUsers();

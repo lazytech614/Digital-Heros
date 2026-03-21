@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function WinnerActions({ id }: { id: string }) {
   const router = useRouter();
@@ -19,6 +20,7 @@ export default function WinnerActions({ id }: { id: string }) {
     setLoading(null);
 
     router.refresh();
+    toast.success("Winner updated!");
   };
 
   return (

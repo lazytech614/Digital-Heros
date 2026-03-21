@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
+import { toast } from "sonner";
 
 interface Props {
   onSuccess: () => void;
@@ -18,7 +19,7 @@ export default function AddCharityForm({ onSuccess }: Props) {
 
   const submit = async () => {
     if (!name || !description) {
-      alert("Name and description are required");
+      toast.error("Name and description are required");
       return;
     }
 
@@ -38,6 +39,7 @@ export default function AddCharityForm({ onSuccess }: Props) {
     setImageUrl("");
     setLoading(false);
 
+    toast.success("Charity added!");
     onSuccess(); 
   };
 

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
+import { toast } from "sonner";
 
 type Charity = {
   id: string;
@@ -33,6 +34,7 @@ export default function CharityItem({ charity, onRefresh }: Props) {
       }),
     });
 
+    toast.success("Charity updated!");
     onRefresh();
   };
 
@@ -44,6 +46,7 @@ export default function CharityItem({ charity, onRefresh }: Props) {
       method: "DELETE",
     });
 
+    toast.success("Charity deleted!");
     onRefresh();
   };
 
@@ -61,6 +64,7 @@ export default function CharityItem({ charity, onRefresh }: Props) {
 
     setEditing(false);
     setLoading(false);
+    toast.success("Charity updated!");
     onRefresh();
   };
 
