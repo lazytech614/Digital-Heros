@@ -1,10 +1,17 @@
 import { prisma } from "@/lib/prisma";
 
+const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+
 export async function getUsers(filters: any) {
   const { sort, subscription, contribution, charities, name } = filters;
 
   return prisma.user.findMany({
     where: {
+      ...(adminEmail && {
+        NOT: {
+          email: adminEmail,
+        },
+      }),
       ...(subscription && {
         subscriptionStatus: subscription,
       }),
