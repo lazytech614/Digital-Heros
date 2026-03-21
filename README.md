@@ -1,36 +1,127 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎯 Digital Heroes
 
-## Getting Started
+A full-stack web application where users can subscribe, contribute to charities, and participate in monthly prize draws.
 
-First, run the development server:
+---
+
+## 🚀 Features
+
+- 🔐 Authentication using Clerk  
+- 💳 Subscription system (Stripe)  
+- 🎁 Monthly lucky draw system  
+- ❤️ Charity contribution selection  
+- 🏆 Winner management (Admin)  
+- 📊 Admin dashboard  
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend:** Next.js (App Router), Tailwind CSS, shadcn/ui  
+- **Backend:** Next.js API Routes  
+- **Database:** PostgreSQL (Prisma ORM)  
+- **Auth:** Clerk  
+- **Payments:** Stripe  
+
+---
+
+## 📦 Installation
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/lazytech614/digital-heroes.git
+cd digital-heroes
+```
+
+---
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+---
+
+### 3. Setup environment variables
+
+Create a `.env` file in the root directory and add:
+
+```env
+# Base url of the app
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
+
+# Database
+DATABASE_URL=
+DIRECT_URL=
+
+# Clerk Authentication
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+CLERK_SECRET_KEY=
+
+# Admin
+NEXT_PUBLIC_ADMIN_EMAIL=
+
+# Stripe
+STRIPE_SECRET_KEY=
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
+STRIPE_WEBHOOK_SECRET=
+
+```
+
+---
+
+### 4. Setup database
+
+```bash
+npx prisma generate
+npx prisma migrate dev
+```
+
+---
+
+### 5. Run the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🌐 Deployment (Vercel)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Push your code to GitHub  
+2. Import project into Vercel  
+3. Add all environment variables in Vercel dashboard  
+4. Deploy 🚀  
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🔐 Admin Access
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Admin is determined by email:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```env
+NEXT_PUBLIC_ADMIN_EMAIL=your-email@example.com
+```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## ⚠️ Important Notes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Always run `prisma generate` before build  
+- Ensure environment variables are correctly set in production  
+- Use `export const dynamic = "force-dynamic"` for admin pages  
+
+---
+
+## 🤝 Contributing
+
+Pull requests are welcome! Feel free to open issues or suggest improvements.
+
+---
+
+## 💡 Author
+
+Built with ❤️ by Rupanjan
