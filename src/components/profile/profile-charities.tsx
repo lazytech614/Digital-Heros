@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
+import ConfirmationDialog from "../global/confirmation-dialog";
 
 type Charity = {
   id: string;
@@ -59,15 +60,20 @@ export default function ProfileCharities({ charities }: Props) {
               <div key={c.id} className="border p-4 rounded-lg flex flex-col justify-between">
                 <h3 className="font-medium">{c.name}</h3>
                 <p className="text-sm text-gray-500">{c.description}</p>
-                <button
-                  disabled={loading}
-                  onClick={() => handleWithdrawSupport(c.id)}
-                  className={`mt-4 w-full py-2 rounded cursor-pointer bg-red-600 text-white hover:bg-red-700 ${
-                    loading ? "opacity-70 cursor-wait" : ""
-                  }`}
+                <ConfirmationDialog
+                  title="Withdraw Charity Support"
+                  description="Are you sure you want to withdraw support for this charity?"
+                  onConfirm={() => handleWithdrawSupport(c.id)}
                 >
-                  {loading ? "Loading..." : "Withdraw Support"}
-                </button>
+                  <button
+                    disabled={loading}
+                    className={`mt-4 w-full py-2 rounded cursor-pointer bg-red-600 text-white hover:bg-red-700 ${
+                      loading ? "opacity-70 cursor-wait" : ""
+                    }`}
+                  >
+                    {loading ? "Loading..." : "Withdraw Support"}
+                  </button>
+                </ConfirmationDialog>
               </div>
             );
           })}

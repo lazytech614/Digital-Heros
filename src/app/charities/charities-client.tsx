@@ -1,5 +1,6 @@
 "use client";
 
+import ConfirmationDialog from "@/components/global/confirmation-dialog";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -102,21 +103,35 @@ export default function CharitiesClient({ charities, supportedCharityIds }: Prop
                 </p>
 
                 {/* Button */}
-                <button
-                  disabled={loading}
-                  onClick={() => handleSupportToggle(charity.id)}
-                  className={`mt-4 w-full py-2 rounded cursor-pointer ${
+                <ConfirmationDialog
+                  title={
                     isSupported
-                      ? "bg-red-600 text-white hover:bg-red-700"
-                      : "bg-[#053C29] text-white hover:bg-[#045022]"
-                  }`}
+                      ? "Withdraw Charity Support"
+                      : "Support Charity"
+                  }
+                  description={
+                    isSupported
+                      ? "Are you sure you want to withdraw support for this charity?"
+                      : "Are you sure you want to support this charity?"
+                  }
+                  color={isSupported ? "red" : "green"}
+                  onConfirm={() => handleSupportToggle(charity.id)}
                 >
-                  {loading
-                    ? "Loading..."
-                    : isSupported
-                    ? "Withdraw Support"
-                    : "Support this charity"}
-                </button>
+                  <button
+                    disabled={loading}
+                    className={`mt-4 w-full py-2 rounded cursor-pointer ${
+                      isSupported
+                        ? "bg-red-600 text-white hover:bg-red-700"
+                        : "bg-[#053C29] text-white hover:bg-[#045022]"
+                    }`}
+                  >
+                    {loading
+                      ? "Loading..."
+                      : isSupported
+                      ? "Withdraw Support"
+                      : "Support this charity"}
+                  </button>
+                </ConfirmationDialog>
               </div>
             </div>
           );
