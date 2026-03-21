@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
-export default function WinnerActions({ id }: { id: string }) {
+export default function WinnerActions({ id, onRefresh }: { id: string, onRefresh: () => void }) {
   const router = useRouter();
   const [loading, setLoading] = useState<string | null>(null);
 
@@ -19,7 +19,7 @@ export default function WinnerActions({ id }: { id: string }) {
 
     setLoading(null);
 
-    router.refresh();
+    onRefresh()
     toast.success("Winner updated!");
   };
 
