@@ -7,7 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
 import WinnerActions from "@/components/winner/winner-actions";
 
 export const dynamic = "force-dynamic";

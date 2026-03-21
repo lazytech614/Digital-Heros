@@ -45,7 +45,7 @@ const Footer = () => {
       <div className="w-full h-[0.5px] bg-gray-600 my-8" />
 
       <div className="container px-4 mx-auto flex justify-between items-center text-sm opacity-75">
-        <p>className="container px-4 mx-auto</p>
+        <p>&copy; {new Date().getFullYear()} BirdieGive</p>
         <p>Made with 💖 for golfers & charities.</p>
       </div>
     </footer>

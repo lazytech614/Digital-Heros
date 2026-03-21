@@ -60,9 +60,15 @@ const Navbar = () => {
       subscribed: false,
     },
     {
+      label: "Impact",
+      href: "/#impact",
+      loggedin: false,
+      subscribed: false,
+    },
+    {
       label: "Pricing",
       href: "/#pricing",
-      loggedin: false,
+      loggedin: true,
       subscribed: false,
     },
     {
@@ -115,6 +121,7 @@ const Navbar = () => {
     if (!isSignedIn && link.loggedin) return false;
     if(isSignedIn && !link.loggedin) return false;
     if(isSignedIn && isSubscribed && !link.subscribed) return false;
+    if(isSignedIn && !isSubscribed && link.label === "Add Score") return false;
     return true;
   });
 
@@ -122,7 +129,7 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[#053C29] backdrop-blur-lg border-b border-[#10A37F]/20">
       <div className="container mx-auto flex items-center justify-between h-16 px-4">
         {/* Logo */}
-        <a href="/" className="text-xl font-bold text-white tracking-tight">
+        <a href="/" className="text-2xl sm:text-4xl font-bold text-white tracking-tight">
           Birdie<span style={{ color: "#FFD700" }}>Give</span>
         </a>
 
@@ -132,7 +139,7 @@ const Navbar = () => {
             <a
               key={link.href}
               href={link.href}
-              className="text-sm hover:text-white transition-colors"
+              className="text-md hover:text-white transition-colors"
             >
               {link.label}
             </a>
@@ -142,7 +149,7 @@ const Navbar = () => {
             <a
               key={link.href}
               href={`/admin/${link.href}`}
-              className="text-sm hover:text-white transition-colors"
+              className="text-md hover:text-white transition-colors"
             >
               {link.label}
             </a>
@@ -150,13 +157,13 @@ const Navbar = () => {
 
           <Show when="signed-out">
             <SignInButton>
-              <Button className="bg-transparent text-white hover:bg-white/10">
+              <Button className="bg-transparent text-md border border-white/10 cursor-pointer px-6 py-5 rounded-2xl text-white hover:bg-white/10">
                 Sign In
               </Button>
             </SignInButton>
 
             <SignUpButton>
-              <button className="bg-[#FFD700] text-black rounded-full font-medium px-4 py-2 hover:opacity-90">
+              <button className="bg-[#FFD700] text-black cursor-pointer rounded-full font-medium px-4 py-2 hover:opacity-90">
                 Sign Up
               </button>
             </SignUpButton>
@@ -180,34 +187,43 @@ const Navbar = () => {
       {open && (
         <div className="md:hidden bg-[#0A5C47]/95 backdrop-blur-lg border-b border-[#10A37F]/20">
           <div className="flex flex-col gap-4 p-6">
-            {filteredLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={() => setOpen(false)}
-                className="text-[#F5F5DC]/70 hover:text-white transition-colors"
-              >
-                {link.label}
-              </a>
-            ))}
+            {!isAdmin && filteredLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="text-sm text-white/80 transition-colors"
+            >
+              {link.label}
+            </a>
+          ))}
 
-            <Show when="signed-out">
-              <SignInButton>
-                <Button className="w-full">Sign In</Button>
-              </SignInButton>
+          {isAdmin && adminLinks.map((link) => (
+            <a
+              key={link.href}
+              href={`/admin/${link.href}`}
+              className="text-sm hover:text-white transition-colors"
+            >
+              {link.label}
+            </a>
+          ))}
 
-              <SignUpButton>
-                <Button className="w-full bg-[#FFD700] text-black">
-                  Sign Up
-                </Button>
-              </SignUpButton>
-            </Show>
+          <Show when="signed-out">
+            <SignInButton>
+              <button className="bg-transparent text-white hover:bg-white/10">
+                Sign In
+              </button>
+            </SignInButton>
 
-            <Show when="signed-in">
-              <div className="flex justify-center">
-                <UserButton />
-              </div>
-            </Show>
+            <SignUpButton>
+              <button className="bg-[#FFD700] text-black rounded-full font-medium px-4 py-2 hover:opacity-90">
+                Sign Up
+              </button>
+            </SignUpButton>
+          </Show>
+
+          <Show when="signed-in">
+            <UserButton />
+          </Show>
           </div>
         </div>
       )}

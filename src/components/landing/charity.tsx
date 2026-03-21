@@ -1,6 +1,6 @@
 export default function Charity() {
   return (
-    <section id="charity" className="bg-[#0b4a34] text-white py-24 px-6">
+    <section id="impact" className="bg-[#0b4a34] text-white py-24 px-6">
       <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
         
         <div>
@@ -67,7 +67,7 @@ export default function Charity() {
             </div>
 
             <h3 className="text-5xl font-bold text-yellow-400 mb-4">
-              £50K+
+              {"\u20B9"} 60,000
             </h3>
 
             <p className="text-gray-300">

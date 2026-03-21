@@ -1,8 +1,20 @@
 "use client"
 
+import { useUser } from "@clerk/nextjs"
+import { toast } from "sonner"
+
 export default function Pricing() {
+  const {isSignedIn} = useUser()
+
   const handleSubscribe = async(priceId: string) => {
-    if(!priceId) return
+    if(!isSignedIn) {
+      toast.info("Please sign in to subscribe")
+      return
+    }
+    if(!priceId) {
+      toast.error("Something went wrong")
+      return
+    }
 
     try{
       const response = await fetch('/api/stripe/checkout', {
@@ -16,10 +28,13 @@ export default function Pricing() {
       const {url} = await response.json()
 
       if(url) window.location.href = url
-      else throw new Error('No checkout url')
+      else {
+        toast.error("Something went wrong")
+        throw new Error('No checkout url')
+      }
     }catch(err){
+      toast.error("Something went wrong")
       console.log("Error during checkout", err)
-      alert("Error during checkout")
     }
   }
 
@@ -44,7 +59,7 @@ export default function Pricing() {
           <h3 className="text-xl font-semibold mb-6">Monthly</h3>
 
           <div className="mb-6">
-            <span className="text-4xl font-bold">£9.99</span>
+            <span className="text-4xl font-bold">{"\u20B9"} 199</span>
             <span className="text-gray-500">/month</span>
           </div>
 
@@ -56,7 +71,7 @@ export default function Pricing() {
             <li>✔ Winner verification support</li>
           </ul>
 
-          <button onClick={() => handleSubscribe("monthly")} className="w-full bg-[#0b4a34] text-white py-3 rounded-xl font-medium hover:opacity-90 transition">
+          <button onClick={() => handleSubscribe("monthly")} className="cursor-pointer w-full bg-[#0b4a34] text-white py-3 rounded-xl font-medium hover:opacity-90 transition">
             Subscribe →
           </button>
         </div>
@@ -72,7 +87,7 @@ export default function Pricing() {
           <h3 className="text-xl font-semibold mb-6">Yearly</h3>
 
           <div className="mb-6">
-            <span className="text-4xl font-bold">£89.99</span>
+            <span className="text-4xl font-bold">{"\u20B9"} 1,999</span>
             <span className="text-gray-500">/year</span>
           </div>
 
@@ -84,7 +99,7 @@ export default function Pricing() {
             <li>✔ Early access to new features</li>
           </ul>
 
-          <button onClick={() => handleSubscribe("yearly")} className="w-full bg-orange-400 text-black py-3 rounded-xl font-medium hover:opacity-90 transition">
+          <button onClick={() => handleSubscribe("yearly")} className="cursor-pointer w-full bg-orange-400 text-black py-3 rounded-xl font-medium hover:opacity-90 transition">
             Subscribe →
           </button>
         </div>

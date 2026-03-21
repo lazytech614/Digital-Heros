@@ -16,7 +16,7 @@ export default async function LandingPage() {
     const admin = await isAdmin();
     // redirect("/dashboard");
     if(admin) redirect("/admin")
-    if(user.subscriptionStatus === "ACTIVE") redirect("/dashboard")
+    if(user.subscriptionStatus === "ACTIVE") redirect("/add-score")
   }
 
   return (
