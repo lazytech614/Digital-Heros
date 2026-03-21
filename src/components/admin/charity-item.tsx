@@ -108,6 +108,8 @@ export default function CharityItem({ charity, onRefresh }: Props) {
         <div className="flex flex-wrap gap-2">
           {/* Featured Toggle */}
           <Button
+            disabled={loading}
+            className="cursor-pointer"
             variant={charity.isFeatured ? "default" : "outline"}
             onClick={toggleFeatured}
           >
@@ -120,13 +122,13 @@ export default function CharityItem({ charity, onRefresh }: Props) {
               {loading ? "Saving..." : "Save"}
             </Button>
           ) : (
-            <Button variant="outline" onClick={() => setEditing(true)}>
+            <Button className="cursor-pointer" variant="outline" onClick={() => setEditing(true)}>
               Edit
             </Button>
           )}
 
           {/* Delete */}
-          <Button variant="destructive" onClick={handleDelete}>
+          <Button className="cursor-pointer" disabled={loading} variant="destructive" onClick={handleDelete}>
             Delete
           </Button>
         </div>
