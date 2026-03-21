@@ -30,7 +30,7 @@ A full-stack web application where users can subscribe, contribute to charities,
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/lazytech614/digital-heroes.git
+git clone https://github.com/lazytech614/Digital-Heroes.git
 cd digital-heroes
 ```
 
