@@ -109,7 +109,7 @@ export default function UsersPage() {
   }
 
   return (
-    <div className="p-6 bg-[#f8fafc] min-h-screen">
+    <div className="container mx-auto mt-16 p-6 bg-[#f8fafc] min-h-screen">
       <h1 className="text-3xl font-bold mb-6">Users</h1>
 
       {/* FILTERS */}
@@ -164,7 +164,7 @@ export default function UsersPage() {
           return (
             <div
               key={user.id}
-              className="bg-white rounded-2xl shadow-sm border p-5 space-y-3"
+              className="bg-white rounded-2xl shadow-sm border p-5 space-y-3 flex flex-col justify-between items-start"
             >
               <div>
                 <p className="font-semibold text-lg">{user.name}</p>
@@ -175,10 +175,11 @@ export default function UsersPage() {
                     {user.subscriptionStatus || "None"}
                   </span>
                 </p>
+                <p>Contribution: {user.contributionPct}%</p>
               </div>
 
               {/* Charities */}
-              <div>
+              <div className="w-full">
                 <p className="font-medium text-sm mb-1">Charities:</p>
 
                 {user.charities.length === 0 ? (

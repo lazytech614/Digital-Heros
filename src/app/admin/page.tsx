@@ -11,7 +11,7 @@ export default function AdminDashboard() {
   if (!data) return <p>Error loading data</p>;
 
   return (
-    <div className="p-6 space-y-6 min-h-screen mt-16">
+    <div className="container mx-auto p-6 space-y-6 min-h-screen mt-16">
       <h1 className="text-2xl font-bold">Reports & Analytics</h1>
 
       {/* Stats */}

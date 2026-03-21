@@ -22,7 +22,7 @@ export default async function WinnersPage() {
   });
 
   return (
-    <div className="min-h-screen mt-16 p-6">
+    <div className="container mx-auto min-h-screen mt-16 p-6">
       <h1 className="text-2xl font-semibold mb-6">Winners</h1>
 
       <div className="bg-white rounded-xl border shadow-sm">
@@ -63,19 +63,6 @@ export default async function WinnersPage() {
                 </TableCell>
 
                 <TableCell className="text-right space-x-2 flex">
-                  {/* <form action={`/api/winner/${w.id}`} method="POST">
-                    <input type="hidden" name="action" value="approve" />
-                    <Button size="sm" variant="default">
-                      Approve
-                    </Button>
-                  </form>
-
-                  <form action={`/api/winner/${w.id}`} method="POST">
-                    <input type="hidden" name="action" value="reject" />
-                    <Button size="sm" variant="destructive">
-                      Reject
-                    </Button>
-                  </form> */}
                   <WinnerActions id={w.id} />
                 </TableCell>
               </TableRow>
