@@ -1,5 +1,6 @@
 "use client";
 
+import ConfirmationDialog from "@/components/global/confirmation-dialog";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -10,42 +11,47 @@ export default function UsersPage() {
     subscription: "",
     contribution: "",
     charities: [] as string[],
+    name: "",
   });
 
   const [loadingId, setLoadingId] = useState<string | null>(null);
   const [actionType, setActionType] = useState<string | null>(null);
 
-  async function fetchUsers() {
-    try {
-      const query = new URLSearchParams();
+async function fetchUsers() {
+  try {
+    const query = new URLSearchParams();
 
-      query.append("sort", filters.sort);
+    query.append("sort", filters.sort);
 
-      if (filters.subscription)
-        query.append("subscription", filters.subscription);
-
-      if (filters.contribution)
-        query.append("contribution", filters.contribution);
-
-      filters.charities.forEach((c) =>
-        query.append("charities", c)
-      );
-
-      const res = await fetch(`/api/users?${query.toString()}`);
-
-      if (!res.ok) {
-        console.error("API Error:", res.status);
-        setUsers([]);
-        return;
-      }
-
-      const data = await res.json();
-      setUsers(Array.isArray(data) ? data : []);
-    } catch (err) {
-      console.error("Fetch failed:", err);
-      setUsers([]);
+    if (filters.subscription) {
+      query.append("subscription", filters.subscription);
     }
+
+    if (filters.contribution) {
+      query.append("contribution", filters.contribution);
+    }
+
+    filters.charities.forEach((c) => query.append("charities", c));
+
+    if (filters.name.trim()) {
+      query.append("name", filters.name.trim());
+    }
+
+    const res = await fetch(`/api/users?${query.toString()}`);
+
+    if (!res.ok) {
+      console.error("API Error:", res.status);
+      setUsers([]);
+      return;
+    }
+
+    const data = await res.json();
+    setUsers(Array.isArray(data) ? data : []);
+  } catch (err) {
+    console.error("Fetch failed:", err);
+    setUsers([]);
   }
+}
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -55,14 +61,7 @@ export default function UsersPage() {
     return () => clearTimeout(timeout);
   }, [filters]);
 
-  //TODO: Implement better UI
-  const confirmAction = (message: string) => {
-    return window.confirm(message);
-  };
-
   async function deleteUserHandler(id: string) {
-    if (!confirmAction("Are you sure you want to delete this user?")) return;
-
     setLoadingId(id);
     setActionType("delete");
 
@@ -75,8 +74,6 @@ export default function UsersPage() {
   }
 
   async function cancelSubscriptionHandler(id: string) {
-    if (!confirmAction("Cancel this user's subscription?")) return;
-
     setLoadingId(id);
     setActionType("subscription");
 
@@ -92,8 +89,6 @@ export default function UsersPage() {
   }
 
   async function cancelCharityHandler(userId: string, charityId: string) {
-    if (!confirmAction("Remove this charity from user?")) return;
-
     setLoadingId(userId + charityId);
     setActionType("charity");
 
@@ -114,7 +109,16 @@ export default function UsersPage() {
 
       {/* FILTERS */}
       <div className="flex flex-wrap gap-3 mb-6">
-        {/* SORT */}
+        <input
+          type="text"
+          className="border p-2 rounded"
+          placeholder="Search by name"
+          value={filters.name}
+          onChange={(e) =>
+            setFilters({ ...filters, name: e.target.value })
+          }
+        />
+        
         <select
           className="border p-2 rounded"
           onChange={(e) =>
@@ -125,7 +129,6 @@ export default function UsersPage() {
           <option value="asc">Oldest</option>
         </select>
 
-        {/* ✅ SUBSCRIPTION DROPDOWN */}
         <select
           className="border p-2 rounded"
           value={filters.subscription}
@@ -140,7 +143,6 @@ export default function UsersPage() {
           <option value="PAST_DUE">PAST_DUE</option>
         </select>
 
-        {/* ✅ CONTRIBUTION FILTER (>=) */}
         <input
           type="number"
           min="0"
@@ -153,7 +155,6 @@ export default function UsersPage() {
         />
       </div>
 
-      {/* USERS LIST */}
       <div className="grid md:grid-cols-2 gap-6">
         {users.map((user) => {
           const isDeleting =
@@ -198,15 +199,20 @@ export default function UsersPage() {
                         >
                           <span>{c.name}</span>
 
-                          <button
-                            disabled={isRemoving}
-                            onClick={() =>
+                          <ConfirmationDialog
+                            title="Remove Charity"
+                            description="Are you sure you want to remove this charity from this user? This cannot be undone!"
+                            onConfirm={() =>
                               cancelCharityHandler(user.id, c.id)
                             }
-                            className="text-red-500 text-xs"
                           >
-                            {isRemoving ? "Removing..." : "Remove"}
-                          </button>
+                            <button
+                              disabled={isRemoving}
+                              className="text-red-500 text-xs cursor-pointer"
+                            >
+                              {isRemoving ? "Removing..." : "Remove"}
+                            </button>
+                          </ConfirmationDialog>
                         </div>
                       );
                     })}
@@ -216,23 +222,35 @@ export default function UsersPage() {
 
               {/* Actions */}
               <div className="flex gap-2 pt-2">
-                <button
-                  disabled={isCancellingSub}
-                  onClick={() => cancelSubscriptionHandler(user.id)}
-                  className="bg-yellow-500 px-3 py-1 rounded text-sm"
+                <ConfirmationDialog
+                  title="Cancel Subscription"
+                  description="Are you sure you want to cancel this subscription? This cannot be undone!"
+                  onConfirm={() => cancelSubscriptionHandler(user.id)}
                 >
-                  {isCancellingSub
-                    ? "Cancelling..."
-                    : "Cancel Subscription"}
-                </button>
+                  {user.subscriptionStatus === "ACTIVE" && (
+                    <button
+                    disabled={isCancellingSub}
+                    className="bg-yellow-500 px-3 py-1 rounded text-sm cursor-pointer"
+                  >
+                    {isCancellingSub
+                      ? "Cancelling..."
+                      : "Cancel Subscription"}
+                  </button>
+                  )}
+                </ConfirmationDialog>
 
-                <button
-                  disabled={isDeleting}
-                  onClick={() => deleteUserHandler(user.id)}
-                  className="bg-red-600 text-white px-3 py-1 rounded text-sm"
+                <ConfirmationDialog
+                  title="Delete User"
+                  description="Are you sure you want to delete this user? This cannot be undone!"
+                  onConfirm={() => deleteUserHandler(user.id)}
                 >
-                  {isDeleting ? "Deleting..." : "Delete"}
+                  <button
+                  disabled={isDeleting}
+                  className="bg-red-600 text-white px-3 py-1 rounded text-sm cursor-pointer"
+                >
+                  {isDeleting ? "Deleting..." : "Delete User"}
                 </button>
+                </ConfirmationDialog>
               </div>
             </div>
           );

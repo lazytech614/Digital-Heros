@@ -90,20 +90,20 @@ export default function WinnersPageClient() {
       <div className="grid md:grid-cols-3 gap-4 mb-4">
         {topWinners.map((w, i) => (
           <div
-  key={w.email}
-  className={`p-4 rounded-xl shadow flex flex-col items-center justify-center ${
-    i === 0
-      ? "bg-yellow-200" // 1st place – gold
-      : i === 1
-      ? "bg-gray-200" // 2nd place – silver
-      : "bg-orange-200" // 3rd place – bronze
-  }`}
->
-  <span className="text-sm text-gray-500">#{i + 1} Top Winner</span>
-  <h2 className="font-semibold text-lg mt-1">{w.name}</h2>
-  <span className="text-gray-600">{w.email}</span>
-  <span className="mt-2 font-bold text-green-600 text-lg">₹{w.totalAmount}</span>
-</div>
+            key={w.email}
+            className={`p-4 rounded-xl shadow flex flex-col items-center justify-center ${
+              i === 0
+                ? "bg-yellow-200" // 1st place – gold
+                : i === 1
+                ? "bg-gray-200" // 2nd place – silver
+                : "bg-orange-200" // 3rd place – bronze
+            }`}
+          >
+          <span className="text-sm text-gray-500">#{i + 1} Top Winner</span>
+          <h2 className="font-semibold text-lg mt-1">{w.name}</h2>
+          <span className="text-gray-600">{w.email}</span>
+          <span className="mt-2 font-bold text-green-600 text-lg">₹{w.totalAmount}</span>
+        </div>
         ))}
       </div>
 
@@ -187,7 +187,11 @@ export default function WinnersPageClient() {
                   </span>
                 </TableCell>
                 <TableCell className="text-right space-x-2 flex">
-                  <WinnerActions id={w.id} onRefresh={fetchWinners} />
+                  <WinnerActions
+                    id={w.id}
+                    onRefresh={fetchWinners}
+                    disabled={w.status !== "PENDING"}
+                  />
                 </TableCell>
               </TableRow>
             ))}

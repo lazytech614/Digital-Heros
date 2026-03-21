@@ -1,23 +1,18 @@
 import { prisma } from "@/lib/prisma";
 
 export async function getUsers(filters: any) {
-  const { sort, subscription, contribution, charities } = filters;
+  const { sort, subscription, contribution, charities, name } = filters;
 
   return prisma.user.findMany({
     where: {
-      // ✅ Subscription filter (safe)
       ...(subscription && {
         subscriptionStatus: subscription,
       }),
-
-      // ✅ Contribution >= filter (IMPORTANT FIX)
       ...(contribution && {
         contributionPct: {
           gte: Number(contribution),
         },
       }),
-
-      // ✅ Charities filter (if exists)
       ...(charities?.length > 0 && {
         charities: {
           some: {
@@ -27,12 +22,16 @@ export async function getUsers(filters: any) {
           },
         },
       }),
+      ...(name && name.trim() !== "" && {
+        name: {
+          contains: name.trim(),
+          mode: "insensitive", 
+        },
+      }),
     },
-
     orderBy: {
       createdAt: sort === "asc" ? "asc" : "desc",
     },
-
     include: {
       charities: true,
     },
@@ -44,19 +43,16 @@ export async function deleteUser(id: string) {
 }
 
 export async function cancelSubscription(id: string) {
-  // 1. Find subscription
   const subscription = await prisma.subscription.findUnique({
     where: { userId: id },
   });
 
-  // 2. Delete subscription if exists
   if (subscription) {
     await prisma.subscription.delete({
       where: { id: subscription.id },
     });
   }
 
-  // 3. Update user (VERY IMPORTANT)
   return prisma.user.update({
     where: { id },
     data: {

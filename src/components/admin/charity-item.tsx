@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
+import ConfirmationDialog from "../global/confirmation-dialog";
 
 type Charity = {
   id: string;
@@ -40,8 +41,6 @@ export default function CharityItem({ charity, onRefresh }: Props) {
 
   // Delete
   const handleDelete = async () => {
-    if (!confirm("Delete this charity?")) return;
-
     await fetch(`/api/charity/${charity.id}`, {
       method: "DELETE",
     });
@@ -128,9 +127,15 @@ export default function CharityItem({ charity, onRefresh }: Props) {
           )}
 
           {/* Delete */}
-          <Button className="cursor-pointer" disabled={loading} variant="destructive" onClick={handleDelete}>
-            Delete
-          </Button>
+          <ConfirmationDialog
+            title="Delete Charity"
+            description="Are you sure you want to delete this charity? This action cannot be undone."
+            onConfirm={handleDelete}
+          >
+            <Button variant="destructive" disabled={loading}>
+              Delete
+            </Button>
+          </ConfirmationDialog>
         </div>
       </CardContent>
     </Card>

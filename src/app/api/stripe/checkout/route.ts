@@ -58,8 +58,8 @@ export async function POST(request: NextRequest) {
             ],
             mode: "subscription",
             allow_promotion_codes: true,
-            success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success`,
-            cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/cancel`,
+            success_url: `${process.env.NEXT_PUBLIC_APP_URL}/profile`,
+            cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/`,
             metadata: {
                 userId: user.id,
                 priceId

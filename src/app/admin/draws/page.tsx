@@ -11,6 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { toast } from "sonner";
+import ConfirmationDialog from "@/components/global/confirmation-dialog";
 
 export default function DrawPage() {
   const [loading, setLoading] = useState(false);
@@ -90,9 +91,16 @@ export default function DrawPage() {
       {/* RUN DRAW */}
       <div>
         <h1 className="text-2xl font-semibold mb-4">Run Monthly Draw</h1>
-        <Button className="cursor-pointer"  onClick={runDraw} disabled={loading}>
-          {loading ? "Running..." : "Run Draw"}
-        </Button>
+        <ConfirmationDialog
+          title="Run draw"
+          description="Are you sure you want to run a draw. This action can not be undone!"
+          onConfirm={runDraw}
+          color="green"
+        >
+          <Button className="cursor-pointer" disabled={loading}>
+            {loading ? "Running..." : "Run Draw"}
+          </Button>
+        </ConfirmationDialog>
       </div>
 
       {/* DRAWS TABLE */}

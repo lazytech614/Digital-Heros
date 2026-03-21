@@ -1,12 +1,17 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import ConfirmationDialog from "../global/confirmation-dialog";
 
-export default function WinnerActions({ id, onRefresh }: { id: string, onRefresh: () => void }) {
-  const router = useRouter();
+interface WinnerActionsProps {
+  id: string;
+  onRefresh: () => void;
+  disabled?: boolean; // new prop
+}
+
+export default function WinnerActions({ id, onRefresh, disabled = false }: WinnerActionsProps) {
   const [loading, setLoading] = useState<string | null>(null);
 
   const handleAction = async (action: "approve" | "reject") => {
@@ -18,29 +23,32 @@ export default function WinnerActions({ id, onRefresh }: { id: string, onRefresh
     });
 
     setLoading(null);
-
-    onRefresh()
+    onRefresh();
     toast.success("Winner updated!");
   };
 
   return (
     <div className="flex gap-2">
-      <Button
-        size="sm"
-        onClick={() => handleAction("approve")}
-        disabled={loading === "approve"}
+      <ConfirmationDialog
+        title="Approve payment"
+        description="Are you sure you want to approve this payment? This cannot be undone!"
+        onConfirm={() => handleAction("approve")}
+        color="green"
       >
-        {loading === "approve" ? "Approving..." : "Approve"}
-      </Button>
+        <Button size="sm" disabled={loading === "approve" || disabled}>
+          {loading === "approve" ? "Approving..." : "Approve"}
+        </Button>
+      </ConfirmationDialog>
 
-      <Button
-        size="sm"
-        variant="destructive"
-        onClick={() => handleAction("reject")}
-        disabled={loading === "reject"}
+      <ConfirmationDialog
+        title="Reject payment"
+        description="Are you sure you want to reject this payment? This cannot be undone!"
+        onConfirm={() => handleAction("reject")}
       >
-        {loading === "reject" ? "Rejecting..." : "Reject"}
-      </Button>
+        <Button size="sm" variant="destructive" disabled={loading === "reject" || disabled}>
+          {loading === "reject" ? "Rejecting..." : "Reject"}
+        </Button>
+      </ConfirmationDialog>
     </div>
   );
 }

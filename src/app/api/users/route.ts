@@ -10,6 +10,7 @@ export async function GET(req: NextRequest) {
       subscription: searchParams.get("subscription"),
       contribution: searchParams.get("contribution"),
       charities: searchParams.getAll("charities"),
+      name: searchParams.get("name") || "",
     };
 
     const users = await getUsers(filters);
